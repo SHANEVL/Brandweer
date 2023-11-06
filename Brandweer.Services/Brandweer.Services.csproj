@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Brandweer.Core\Brandweer.Core.csproj" />
+    <ProjectReference Include="..\Brandweer.Dto\Brandweer.Dto.csproj" />
+    <ProjectReference Include="..\Brandweer.Services.Model\Brandweer.Services.Model.csproj" />
+  </ItemGroup>
+
+</Project>
