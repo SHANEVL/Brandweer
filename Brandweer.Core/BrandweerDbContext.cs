@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Brandweer.Core
 {
-    public class BrandweerDbContext : IdentityDbContext
+    public class BrandweerDbContext : IdentityDbContext<IdentityUser>
     {
         public BrandweerDbContext(DbContextOptions options) : base(options)
         {

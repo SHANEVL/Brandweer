@@ -59,6 +59,7 @@ builder.Services.AddSingleton(jwtSettings);
 
 // within this section we are configuring the authentication and setting the default scheme
 builder.Services.AddAuthentication(options => {
+    // scheme 
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -83,6 +84,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
 })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BrandweerDbContext>();
 
 builder.Services.AddScoped<EmployeeService>();
@@ -106,6 +108,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// not needed in .net 7.0 anymore 
 app.UseAuthentication();
 app.UseAuthorization();
 

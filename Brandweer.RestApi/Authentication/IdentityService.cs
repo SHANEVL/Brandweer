@@ -14,9 +14,7 @@ namespace Brandweer.RestApi.Authentication
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtSettings _jwtSettings;
 
-        public IdentityService(
-            UserManager<IdentityUser> userManager,
-            JwtSettings jwtSettings)
+        public IdentityService(UserManager<IdentityUser> userManager, JwtSettings jwtSettings)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
@@ -94,16 +92,28 @@ namespace Brandweer.RestApi.Authentication
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
+
+            // WARNING: Blocking on asynchronous call which can lead to deadlocks and is not recommended.
+            var userRoles = _userManager.GetRolesAsync(user).Result; 
+
+            var claims = new List<Claim>
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.Name, user.Email),
                     new Claim("id", user.Id)
-                }),
+                };
+
+            // Add role claims to the list of claims
+            foreach (var userRole in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -115,5 +125,6 @@ namespace Brandweer.RestApi.Authentication
                 Token = tokenHandler.WriteToken(token)
             };
         }
+
     }
 }

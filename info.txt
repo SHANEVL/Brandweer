@@ -1,0 +1,23 @@
+dotnet user-jwts create 
+
+creates a new bearer token instance
+
+8541ba2e
+
+dotnet user-jwts print <ID> --show-all
+
+--> u can also check on jwt.io what the bearer token does
+--> detailed information can be found on the Auth > IdentityService
+
+dotnet user-jwts print 8541ba2e --show-all
+
+--> here you will see if roles, claims are are implemented etc
+
+dotnet user-jwts key 
+returns signing key
+
+dotnet user-jwts create --role Admin
+--> will create a bearer token with Admin role
+
+
+dotnet user-jwts print 373856ee --show-all
