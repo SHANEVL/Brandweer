@@ -20,4 +20,3 @@ dotnet user-jwts create --role Admin
 --> will create a bearer token with Admin role
 
 
-dotnet user-jwts print 373856ee --show-all
